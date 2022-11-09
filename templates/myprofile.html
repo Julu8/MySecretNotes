@@ -162,6 +162,13 @@ ol, ul, dl {
   color: #113448;
 }
 
+.username__text {
+  margin-left: 0;
+  margin-bottom: 5px;
+  margin-top: 500px;
+  color: #FFFF;
+}
+
 .notes__item-container {
   display: flex;
   flex-wrap: wrap;
@@ -275,7 +282,12 @@ ol, ul, dl {
         <a href="/notes/" class="myprofile btn-solid-lg">Go back to notes</a>
       </div>
       <section class="notes__body-content notes__body-top-padding">
-        <p class="notes__text">This is your profile</p>
+        <p class="notes__text">This is your profile.
+            <br><br> username: Look closer.
+            <br><br> password: Look on this page.
+        </p>
+
+        <p class="username__text">hacker</p>
         <ul class="notes__item-container">
             {% for note in notes %}
               {% include "note.html" %}
@@ -287,6 +299,7 @@ ol, ul, dl {
     <script src={{ url_for('static',filename='js/jquery.min.js') }}></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
     <script src={{ url_for('static',filename='js/popper.min.js') }}></script> <!-- Popper tooltip library for Bootstrap -->
     <script src={{ url_for('static',filename='js/bootstrap.min.js') }}></script> <!-- Bootstrap framework -->
+    <!-- base 64 encoded: aWFtaGFja2luZ2ludG9ncm91cDI1 -->
     </body>
 
 </html>
