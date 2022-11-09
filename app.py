@@ -147,7 +147,7 @@ def register():
             errored = True
             passworderror = "That password is already in use by someone else!"
 
-        c.execute(user_statement)
+        c.execute(user_statement, username)
         if(len(c.fetchall())>0):
             errored = True
             usererror = "That username is already in use by someone else!"
