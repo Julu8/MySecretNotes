@@ -1,4 +1,4 @@
-import json, sqlite3, click, functools, os, hashlib,time, random, sys
+import json, sqlite3, click, functools, os, bcrypt, time, random, sys
 from flask import Flask, current_app, g, session, redirect, render_template, url_for, request
 
 
@@ -32,14 +32,15 @@ CREATE TABLE users (
     password TEXT NOT NULL
 );
 
-INSERT INTO users VALUES(null,"admin", "11223344");
-INSERT INTO users VALUES(null,"Bernardo", "asshole");
+INSERT INTO users VALUES(null,"admin", "$2b$12$HjV9E90MakHVP.DEIw.Lc.K.ZXMnUSAElOGpH/lQA8rUNtsSb94Di");
+INSERT INTO users VALUES(null,"Bernardo", "$2b$12$.u8ctQRsD0Ya3wE4OHAym.szQSgxAOoqzG0h.6Cifz1XbxeaInnCy");
 INSERT INTO notes VALUES(null,2,"1993-09-23 10:10:10","hello my friend",1234567890);
 INSERT INTO notes VALUES(null,2,"1993-09-23 12:10:10","i want lunch pls",1234567891);
 
 """)
 
-
+# Admin code "11223344"
+# Bernardo code "asshole"
 
 ### APPLICATION SETUP ###
 app = Flask(__name__)
@@ -110,14 +111,16 @@ def login():
     error = ""
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
+        password = bytes(request.form['password'], 'utf-8')
         db = connect_db()
         c = db.cursor()
-        statement = "SELECT * FROM users WHERE username = ? AND password = ?;"
-        c.execute(statement, (username, password))
+        statement = "SELECT * FROM users WHERE username = ?"
+        c.execute(statement, (username,))
         result = c.fetchall()
 
-        if len(result) > 0:
+        print(result)
+
+        if len(result) > 0 and bcrypt.checkpw(password, bytes(result[0][2], 'utf-8')):
             session.clear()
             session['logged_in'] = True
             session['userid'] = result[0][0]
@@ -137,7 +140,11 @@ def register():
         
 
         username = request.form['username']
-        password = request.form['password']
+        password = bytes(request.form['password'], 'utf-8')
+        # Hashes the password using bcrypt, and converts the 
+        # given bytes to a string. This is needed for consistency with
+        # the hardcoded users from the initialisation of the db
+        password_hash = bcrypt.hashpw(password, bcrypt.gensalt()).decode("utf-8")
         db = connect_db()
         c = db.cursor()
         user_statement = """SELECT * FROM users WHERE username = ?;"""
@@ -150,7 +157,8 @@ def register():
         if(not errored):
             statement = """INSERT INTO users(id,username,password) VALUES(null,?,?);"""
             print(statement)
-            c.execute(statement,(username, password))
+            # Puts the password hash and username in the db
+            c.execute(statement,(username, password_hash))
             db.commit()
             db.close()
             return f"""<html>
