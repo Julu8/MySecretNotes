@@ -131,6 +131,12 @@ ol, ul, dl {
   right: 50px;
   top: 30px;
 }
+.myprofile {
+  position: absolute;
+  right: 50px;
+  top: 120px;
+}
+
 
 .notes__title-user {
   color: #14bf98;
@@ -265,6 +271,9 @@ ol, ul, dl {
           <h2 class="notes__title-user">{{session['username']}}</h2>
         </article>
       </section>
+      <div>
+        <a href="/myprofile/" class="myprofile btn-solid-lg">My profile</a>
+      </div>
       <section class="notes__body-content notes__body-top-padding">
         <p class="notes__text">Here are your notes:, you can share your notes by sharing your public id</p>
         <ul class="notes__item-container">

@@ -193,6 +193,12 @@ def logout():
     session.clear()
     return redirect(url_for('index'))
 
+@app.route("/myprofile/")
+@login_required
+def myprofile():
+    """My profile"""
+    return render_template('myprofile.html')
+
 if __name__ == "__main__":
     #create database if it doesn't exist yet
     if not os.path.exists(app.database):
