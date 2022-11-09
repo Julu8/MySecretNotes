@@ -180,8 +180,8 @@ def register():
 def delete(noteid):
     db = connect_db()
     c = db.cursor()
-    statement = """DELETE FROM NOTES WHERE id = ?;"""
-    c.execute(statement,(noteid,))
+    statement = """DELETE FROM NOTES WHERE id = %s;""" %noteid
+    c.execute(statement)
     db.commit()
     return redirect(url_for('notes'))
 
