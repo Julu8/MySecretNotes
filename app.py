@@ -176,6 +176,7 @@ def register():
     return render_template('register.html',usererror=usererror,passworderror=passworderror)
 
 @app.route("/delete/int:<noteid>")
+@login_required
 def delete(noteid):
     print("------------------------------ NOTE ID -----------------")
     print(noteid)
