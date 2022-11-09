@@ -117,6 +117,8 @@ def login():
         c.execute(statement, (username, password))
         result = c.fetchall()
 
+        print(username)
+        print(password)
         print(result)
 
         if len(result) > 0:
