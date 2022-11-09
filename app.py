@@ -178,8 +178,12 @@ def register():
 @app.route("/delete/<noteid>")
 @login_required
 def delete(noteid):
-    print("------------------------------ NOTE ID -----------------")
-    print(noteid)
+    db = connect_db()
+    c = db.cursor()
+    statement = """DELETE FROM NOTES WHERE id = ?;"""
+    c.execute(statement,(noteid,))
+    db.commit()
+    return redirect(url_for('notes'))
 
 
 @app.route("/logout/")
