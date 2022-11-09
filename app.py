@@ -197,3 +197,8 @@ if __name__ == "__main__":
         print("'python3 app.py' (to start on port 5000)")
         print("or")
         print("'sudo python3 app.py 80' (to run on any other port)")
+
+@app.route("/delete/<noteid>")
+def delete(noteid):
+    print("------------------------------ NOTE ID -----------------")
+    print(noteid)
